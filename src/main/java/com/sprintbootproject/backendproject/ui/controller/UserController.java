@@ -3,7 +3,9 @@ package com.sprintbootproject.backendproject.ui.controller;
 
 import com.sprintbootproject.backendproject.ui.model.response.UserRest;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,14 +26,17 @@ public class UserController {
   return "Get users with params was called with page= " + page + ", limit= "+ limit + " and sort= " + sort;
  }
 
- @GetMapping(path="/{userId}", produces = { MediaType.APPLICATION_XML_VALUE , MediaType.APPLICATION_JSON_VALUE})
- public UserRest getUser(@PathVariable String userId){
+ @GetMapping(path="/{userId}" ,produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+ public ResponseEntity <UserRest> getUser(@PathVariable String userId){
   
   UserRest user = new UserRest();
   user.setName("Frank");
   user.setLastname("Cruzf'");
   user.setEmail("test@test.com");
-  return user;
+
+  // return new ResponseEntity<UserRest>( user, HttpStatus.BAD_GATEWAY);
+  // return new ResponseEntity<UserRest>( user, HttpStatus.BAD_REQUEST);
+   return new ResponseEntity<UserRest>( user, HttpStatus.OK);
  }
 
  @PostMapping
