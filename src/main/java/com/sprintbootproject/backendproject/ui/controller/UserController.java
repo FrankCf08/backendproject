@@ -1,6 +1,7 @@
 package com.sprintbootproject.backendproject.ui.controller;
 
 
+import com.sprintbootproject.backendproject.ui.model.request.UserDetailsRequestModel;
 import com.sprintbootproject.backendproject.ui.model.response.UserRest;
 
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,14 +36,26 @@ public class UserController {
   user.setLastname("Cruzf'");
   user.setEmail("test@test.com");
 
-  // return new ResponseEntity<UserRest>( user, HttpStatus.BAD_GATEWAY);
-  // return new ResponseEntity<UserRest>( user, HttpStatus.BAD_REQUEST);
-   return new ResponseEntity<UserRest>( user, HttpStatus.OK);
+  return new ResponseEntity<UserRest>( user, HttpStatus.OK);
  }
 
- @PostMapping
- public String createUser(){
-  return "Post user was called";
+ @PostMapping(
+  consumes = {
+   MediaType.APPLICATION_XML_VALUE,
+   MediaType.APPLICATION_JSON_VALUE
+  },
+  produces = {
+   MediaType.APPLICATION_XML_VALUE,
+   MediaType.APPLICATION_JSON_VALUE
+  })
+ public ResponseEntity <UserRest> createUser(@RequestBody UserDetailsRequestModel userdetails){
+  
+  UserRest user = new UserRest();
+  user.setName(userdetails.getName());
+  user.setLastname(userdetails.getLastname());
+  user.setEmail(userdetails.getEmail());
+
+  return new ResponseEntity<>(user, HttpStatus.OK);
  }
 
  @PutMapping
