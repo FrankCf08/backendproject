@@ -1,6 +1,8 @@
 package com.sprintbootproject.backendproject.ui.controller;
 
 
+import javax.validation.Valid;
+
 import com.sprintbootproject.backendproject.ui.model.request.UserDetailsRequestModel;
 import com.sprintbootproject.backendproject.ui.model.response.UserRest;
 
@@ -48,7 +50,7 @@ public class UserController {
    MediaType.APPLICATION_XML_VALUE,
    MediaType.APPLICATION_JSON_VALUE
   })
- public ResponseEntity <UserRest> createUser(@RequestBody UserDetailsRequestModel userdetails){
+ public ResponseEntity <UserRest> createUser(@Valid @RequestBody UserDetailsRequestModel userdetails){
   
   UserRest user = new UserRest();
   user.setName(userdetails.getName());
