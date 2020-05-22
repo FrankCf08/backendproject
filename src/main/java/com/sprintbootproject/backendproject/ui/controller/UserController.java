@@ -109,8 +109,11 @@ public class UserController {
   return new ResponseEntity<UserRest>(users.get(userID),HttpStatus.OK);
  }
 
- @DeleteMapping
- public String deleteUser(){
-  return "Delete user was called";
+ @DeleteMapping(
+  path = "/{userID}")
+ public ResponseEntity<Void> deleteUser(@PathVariable String userID){
+
+   users.remove(userID);
+
+  return ResponseEntity.noContent().build();
  }
-}
