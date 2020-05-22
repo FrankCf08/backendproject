@@ -1,6 +1,10 @@
 package com.sprintbootproject.backendproject.ui.controller;
 
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import javax.validation.Valid;
 
 import com.sprintbootproject.backendproject.ui.model.request.UserDetailsRequestModel;
@@ -23,6 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("users") //http://localhost:8080/users
 public class UserController {
  
+ Map <String, UserRest> users;
+
  @GetMapping
  public String getUsers(@RequestParam(value = "page", defaultValue ="25") int page, 
   @RequestParam(value = "limit", defaultValue = "25") int limit,
@@ -30,15 +36,21 @@ public class UserController {
   return "Get users with params was called with page= " + page + ", limit= "+ limit + " and sort= " + sort;
  }
 
- @GetMapping(path="/{userId}" ,produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
- public ResponseEntity <UserRest> getUser(@PathVariable String userId){
+ @GetMapping(path="/{userID}" ,
+  produces = { 
+   MediaType.APPLICATION_JSON_VALUE, 
+   MediaType.APPLICATION_XML_VALUE 
+  })
+ public ResponseEntity <UserRest> getUser(@PathVariable String userID){
   
-  UserRest user = new UserRest();
-  user.setName("Frank");
-  user.setLastname("Cruzf'");
-  user.setEmail("test@test.com");
+  if(users.containsKey(userID)){
 
-  return new ResponseEntity<UserRest>( user, HttpStatus.OK);
+   return new ResponseEntity<UserRest>( users.get(userID), HttpStatus.OK);
+  }else{
+   
+   return new ResponseEntity<UserRest>( HttpStatus.NO_CONTENT);
+  }
+
  }
 
  @PostMapping(
@@ -56,6 +68,18 @@ public class UserController {
   user.setName(userdetails.getName());
   user.setLastname(userdetails.getLastname());
   user.setEmail(userdetails.getEmail());
+
+  /* Create a Universal Unique Identifier */
+  String userID = UUID.randomUUID().toString();
+
+  /* Save it into my user Object */
+  user.setUserID(userID);
+
+  /* Check if it is empthy */
+  if(users == null) users = new HashMap<>();
+
+  /* Adding it to my users Map */
+  users.put(userID, user);
 
   return new ResponseEntity<>(user, HttpStatus.OK);
  }

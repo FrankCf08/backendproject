@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 public class UserDetailsRequestModel {
  
  @NotNull(message = "Name cannot be empty")
- @Size(min = 8,max = 16, message = "Name cannot be less than 8 or greater than 16 characters") //Size only works with Strings
+ @Size(min = 2,max = 16, message = "Name cannot be less than 8 or greater than 16 characters") //Size only works with Strings
  private String name;
  
  @NotNull(message = "Lastname cannot be empty")
