@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
+import com.sprintbootproject.backendproject.ui.model.request.UpdateUserDetailsRequestModel;
 import com.sprintbootproject.backendproject.ui.model.request.UserDetailsRequestModel;
 import com.sprintbootproject.backendproject.ui.model.response.UserRest;
 
@@ -84,9 +85,28 @@ public class UserController {
   return new ResponseEntity<>(user, HttpStatus.OK);
  }
 
- @PutMapping
- public String updateUser(){
-  return "Update user was called";
+ @PutMapping(
+  path = "/{userID}",
+  consumes = {
+   MediaType.APPLICATION_XML_VALUE,
+   MediaType.APPLICATION_JSON_VALUE,
+  },
+  produces = {
+   MediaType.APPLICATION_XML_VALUE,
+   MediaType.APPLICATION_JSON_VALUE,
+  }
+ )
+ public ResponseEntity <UserRest> updateUser(
+  @PathVariable String userID ,
+  @Valid @RequestBody UpdateUserDetailsRequestModel userDetails){
+
+   UserRest storedUsers = users.get(userID);
+   storedUsers.setName(userDetails.getName());
+   storedUsers.setLastname(userDetails.getLastname());
+
+   users.put(userID, storedUsers);
+   
+  return new ResponseEntity<UserRest>(users.get(userID),HttpStatus.OK);
  }
 
  @DeleteMapping
