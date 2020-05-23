@@ -1,6 +1,5 @@
 package com.sprintbootproject.backendproject.exception;
 
-import java.lang.System.Logger;
 import java.util.Date;
 
 import com.sprintbootproject.backendproject.ui.model.response.ErrorMessage;
@@ -34,6 +33,23 @@ public class AppExceptionsHanlder {
  /* Creating an specific method catcher for my Exception: NullPointerException */
  @ExceptionHandler(value = {NullPointerException.class})
  public ResponseEntity<Object> handleNullPointerException(NullPointerException e, WebRequest request){
+
+  String errorDescription = e.getLocalizedMessage();
+  
+  if(errorDescription == null) errorDescription = e.toString();
+
+  ErrorMessage errorMessage = new ErrorMessage(new Date(), errorDescription);
+
+
+  return new ResponseEntity<>(
+    errorMessage, 
+    new HttpHeaders(),
+    HttpStatus.INTERNAL_SERVER_ERROR);
+ }
+
+  /* Creating a UserServiceException Exception */
+ @ExceptionHandler(value = {UserServiceException.class})
+ public ResponseEntity<Object> handleUserServiceException(UserServiceException e, WebRequest request){
 
   String errorDescription = e.getLocalizedMessage();
   
