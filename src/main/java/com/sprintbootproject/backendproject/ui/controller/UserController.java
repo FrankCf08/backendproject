@@ -44,7 +44,7 @@ public class UserController {
   })
  public ResponseEntity <UserRest> getUser(@PathVariable String userID){
 
-  String name = null;
+   String name = null;
 
   int nameLength = name.length();
   
