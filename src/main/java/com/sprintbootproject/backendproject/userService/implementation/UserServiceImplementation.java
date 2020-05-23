@@ -1,18 +1,28 @@
 package com.sprintbootproject.backendproject.userService.implementation;
 
 import java.util.HashMap;
-import java.util.UUID;
 
+import com.sprintbootproject.backendproject.share.Utils;
 import com.sprintbootproject.backendproject.ui.model.request.UserDetailsRequestModel;
 import com.sprintbootproject.backendproject.ui.model.response.UserRest;
 import com.sprintbootproject.backendproject.userService.UserService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImplementation implements UserService{
 
  HashMap <String, UserRest> users;
+
+ @Autowired
+ Utils utils;
+
+ public UserServiceImplementation(){}
+
+ public UserServiceImplementation(Utils utils){
+  this.utils = utils;
+ }
 
 	@Override
 	public UserRest createUser(UserDetailsRequestModel userdetails) {
@@ -23,7 +33,7 @@ public class UserServiceImplementation implements UserService{
   user.setEmail(userdetails.getEmail());
 
   /* Create a Universal Unique Identifier */
-  String userID = UUID.randomUUID().toString();
+  String userID = utils.generateUserID();
 
   /* Save it into my user Object */
   user.setUserID(userID);
