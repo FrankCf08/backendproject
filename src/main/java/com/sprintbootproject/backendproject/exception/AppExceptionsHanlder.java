@@ -30,4 +30,21 @@ public class AppExceptionsHanlder {
     new HttpHeaders(),
     HttpStatus.INTERNAL_SERVER_ERROR);
  }
+
+ /* Creating an specific method catcher for my Exception: NullPointerException */
+ @ExceptionHandler(value = {NullPointerException.class})
+ public ResponseEntity<Object> handleNullPointerException(NullPointerException e, WebRequest request){
+
+  String errorDescription = e.getLocalizedMessage();
+  
+  if(errorDescription == null) errorDescription = e.toString();
+
+  ErrorMessage errorMessage = new ErrorMessage(new Date(), errorDescription);
+
+
+  return new ResponseEntity<>(
+    errorMessage, 
+    new HttpHeaders(),
+    HttpStatus.INTERNAL_SERVER_ERROR);
+ }
 }
