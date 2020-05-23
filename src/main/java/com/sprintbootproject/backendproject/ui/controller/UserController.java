@@ -1,16 +1,16 @@
 package com.sprintbootproject.backendproject.ui.controller;
 
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.validation.Valid;
 
 import com.sprintbootproject.backendproject.ui.model.request.UpdateUserDetailsRequestModel;
 import com.sprintbootproject.backendproject.ui.model.request.UserDetailsRequestModel;
 import com.sprintbootproject.backendproject.ui.model.response.UserRest;
+import com.sprintbootproject.backendproject.userService.UserService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +29,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
  
  Map <String, UserRest> users;
+
+ /*Autowired will create an instance of the UserSerciceImplementation Object
+   and make it available for us here */
+ @Autowired
+ UserService userService;
 
  @GetMapping
  public String getUsers(@RequestParam(value = "page", defaultValue ="25") int page, 
@@ -69,22 +74,8 @@ public class UserController {
   })
  public ResponseEntity <UserRest> createUser(@Valid @RequestBody UserDetailsRequestModel userdetails){
   
-  UserRest user = new UserRest();
-  user.setName(userdetails.getName());
-  user.setLastname(userdetails.getLastname());
-  user.setEmail(userdetails.getEmail());
-
-  /* Create a Universal Unique Identifier */
-  String userID = UUID.randomUUID().toString();
-
-  /* Save it into my user Object */
-  user.setUserID(userID);
-
-  /* Check if it is empthy */
-  if(users == null) users = new HashMap<>();
-
-  /* Adding it to my users Map */
-  users.put(userID, user);
+  // UserRest user =  new UserServiceImplementation().createUser(userdetails);
+  UserRest user = userService.createUser(userdetails);
 
   return new ResponseEntity<>(user, HttpStatus.OK);
  }
