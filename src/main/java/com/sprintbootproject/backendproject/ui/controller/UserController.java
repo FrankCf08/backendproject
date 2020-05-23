@@ -7,7 +7,6 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
-import com.sprintbootproject.backendproject.exception.UserServiceException;
 import com.sprintbootproject.backendproject.ui.model.request.UpdateUserDetailsRequestModel;
 import com.sprintbootproject.backendproject.ui.model.request.UserDetailsRequestModel;
 import com.sprintbootproject.backendproject.ui.model.response.UserRest;
@@ -45,7 +44,9 @@ public class UserController {
   })
  public ResponseEntity <UserRest> getUser(@PathVariable String userID){
 
-  if(true) throw new UserServiceException("UserServiceException is being thrown");
+  // if(true) throw new UserServiceException("UserServiceException is being thrown");
+  // String name = null;
+  // name.length();
   
   if(users.containsKey(userID)){
 
