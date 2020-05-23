@@ -43,6 +43,10 @@ public class UserController {
    MediaType.APPLICATION_XML_VALUE 
   })
  public ResponseEntity <UserRest> getUser(@PathVariable String userID){
+
+  String name = null;
+
+  int nameLength = name.length();
   
   if(users.containsKey(userID)){
 
@@ -117,3 +121,4 @@ public class UserController {
 
   return ResponseEntity.noContent().build();
  }
+}
