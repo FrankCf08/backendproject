@@ -14,6 +14,7 @@ import org.springframework.web.context.request.WebRequest;
 @ControllerAdvice
 public class AppExceptionsHanlder {
  
+ /* General Exception catcher */
  @ExceptionHandler(value = {Exception.class})
  public ResponseEntity<Object> handleAnyException(Exception e, WebRequest request){
 
@@ -30,9 +31,9 @@ public class AppExceptionsHanlder {
     HttpStatus.INTERNAL_SERVER_ERROR);
  }
 
- /* Creating an specific method catcher for my Exception: NullPointerException */
- @ExceptionHandler(value = {NullPointerException.class})
- public ResponseEntity<Object> handleNullPointerException(NullPointerException e, WebRequest request){
+ /* Creating a method which caches one or more Exceptions: NullPointerException, UserServiceException */
+ @ExceptionHandler(value = {NullPointerException.class, UserServiceException.class})
+ public ResponseEntity<Object> handleSpecificExceptions(Exception e, WebRequest request){
 
   String errorDescription = e.getLocalizedMessage();
   
@@ -47,20 +48,4 @@ public class AppExceptionsHanlder {
     HttpStatus.INTERNAL_SERVER_ERROR);
  }
 
-  /* Creating a UserServiceException Exception */
- @ExceptionHandler(value = {UserServiceException.class})
- public ResponseEntity<Object> handleUserServiceException(UserServiceException e, WebRequest request){
-
-  String errorDescription = e.getLocalizedMessage();
-  
-  if(errorDescription == null) errorDescription = e.toString();
-
-  ErrorMessage errorMessage = new ErrorMessage(new Date(), errorDescription);
-
-
-  return new ResponseEntity<>(
-    errorMessage, 
-    new HttpHeaders(),
-    HttpStatus.INTERNAL_SERVER_ERROR);
- }
 }
